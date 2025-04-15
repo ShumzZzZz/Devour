@@ -78,7 +78,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi
 ---
 # PersistentVolumeClaim for Redis data
 apiVersion: v1
@@ -92,7 +92,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
 ---
 # Deployment for PostgreSQL
 apiVersion: apps/v1
@@ -145,11 +145,11 @@ spec:
               mountPath: /var/lib/postgresql/data
           resources:
             requests:
-              ephemeral-storage: "200Mi"
+#              ephemeral-storage: "100Mi"
               cpu: "200m"
               memory: "256Mi"
             limits:
-              ephemeral-storage: "500Mi"
+#              ephemeral-storage: "200Mi"
               cpu: "500m"
               memory: "512Mi"
       volumes:
@@ -212,11 +212,11 @@ spec:
               value: "yes"
           resources:
             requests:
-              ephemeral-storage: "200Mi"
+#              ephemeral-storage: "100Mi"
               cpu: "200m"
               memory: "512Mi"
             limits:
-              ephemeral-storage: "500Mi"
+#              ephemeral-storage: "200Mi"
               cpu: "600m"
               memory: "1Gi"
       volumes:
@@ -287,11 +287,11 @@ spec:
                   key: PGADMIN_DEFAULT_PASSWORD
           resources:
             requests:
-              ephemeral-storage: "100Mi"
+#              ephemeral-storage: "100Mi"
               cpu: "50m"
               memory: "128Mi"
             limits:
-              ephemeral-storage: "200Mi"
+#              ephemeral-storage: "200Mi"
               cpu: "200m"
               memory: "256Mi"
 ---
