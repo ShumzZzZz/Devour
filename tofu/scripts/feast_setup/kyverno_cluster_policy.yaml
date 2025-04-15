@@ -1,0 +1,65 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: inject-pod-scheduling
+spec:
+  # 1) Deployment, DaemonSet, StatefulSet, Job
+  rules:
+    - name: inject-scheduling-deployments-daemonsets-statefulsets-jobs
+      match:
+        any:
+          - resources:
+              kinds: [Deployment, DaemonSet, StatefulSet, Job]
+              namespaces: [feast]
+      mutate:
+        overlay:
+          spec:
+            template:
+              spec:
+                nodeSelector:
+                  dedicated: featurestore
+                tolerations:
+                  - key: dedicated
+                    operator: "Equal"
+                    value: featurestore
+                    effect: "NoExecute"
+
+    # 2) Pod
+    - name: inject-scheduling-pods
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [feast]
+      mutate:
+        overlay:
+          spec:
+            nodeSelector:
+              dedicated: featurestore
+            tolerations:
+              - key: dedicated
+                operator: "Equal"
+                value: featurestore
+                effect: "NoExecute"
+
+    # 3) CronJob
+    - name: inject-scheduling-cronjobs
+      match:
+        any:
+          - resources:
+              kinds: [CronJob]
+              namespaces: [feast]
+      mutate:
+        overlay:
+          spec:
+            jobTemplate:
+              spec:
+                template:
+                  spec:
+                    nodeSelector:
+                      dedicated: featurestore
+                    tolerations:
+                      - key: dedicated
+                        operator: "Equal"
+                        value: featurestore
+                        effect: "NoExecute"
