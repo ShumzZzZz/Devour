@@ -143,6 +143,15 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              ephemeral-storage: "200Mi"
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              ephemeral-storage: "500Mi"
+              cpu: "500m"
+              memory: "512Mi"
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
@@ -201,6 +210,15 @@ spec:
           env:
             - name: ALLOW_EMPTY_PASSWORD
               value: "yes"
+          resources:
+            requests:
+              ephemeral-storage: "200Mi"
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              ephemeral-storage: "500Mi"
+              cpu: "600m"
+              memory: "1Gi"
       volumes:
         - name: redis-storage
           persistentVolumeClaim:
@@ -267,6 +285,15 @@ spec:
                 secretKeyRef:
                   name: feast-secret
                   key: PGADMIN_DEFAULT_PASSWORD
+          resources:
+            requests:
+              ephemeral-storage: "100Mi"
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              ephemeral-storage: "200Mi"
+              cpu: "200m"
+              memory: "256Mi"
 ---
 # Service for pgAdmin
 apiVersion: v1
