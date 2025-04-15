@@ -25,3 +25,9 @@ kubectl wait --for=condition=available --timeout=8m deployment/feast-example
 kubectl exec deploy/postgres -- psql -h localhost -U feast feast -c '\dt'
 
 kubectl exec deployment/feast-example -itc online -- feast version
+
+
+
+kubectl delete -f feast.yaml
+kubectl delete -f feast_operator_install.yaml
+kubectl delete -f prerequisite_setup.yaml
