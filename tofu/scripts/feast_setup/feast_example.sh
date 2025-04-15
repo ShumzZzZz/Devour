@@ -9,8 +9,8 @@ kubectl taint nodes <nodes> dedicated=featurestore:NoExecute
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/prerequisite_setup.yaml
 kubectl apply -f prerequisite_setup.yaml
 
-kubectl wait --for=condition=available --timeout=5m deployment/redis
-kubectl wait --for=condition=available --timeout=5m deployment/postgres
+kubectl wait --for=condition=available --timeout=5m deployment/redis-feast
+kubectl wait --for=condition=available --timeout=5m deployment/postgres-feast
 
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/feast_operator_install.yaml
 kubectl apply -f feast_operator_install.yaml
