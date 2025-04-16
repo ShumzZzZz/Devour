@@ -1,10 +1,27 @@
 #!/bin/bash
 
+
+
 kubectl create ns feast
 kubectl config set-context --current --namespace feast
 
+#kubectl label nodes ip-10-10-1-10 dedicated=featurestore
+#kubectl label nodes ip-10-10-1-132 dedicated=featurestore
+#kubectl label nodes ip-10-10-1-51 dedicated=featurestore
+#kubectl taint nodes ip-10-10-1-10 dedicated=featurestore:NoExecute
+#kubectl taint nodes ip-10-10-1-132 dedicated=featurestore:NoExecute
+#kubectl taint nodes ip-10-10-1-51 dedicated=featurestore:NoExecute
+
 kubectl label nodes <nodes> dedicated=featurestore
 kubectl taint nodes <nodes> dedicated=featurestore:NoExecute
+
+
+curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/feast_scheduling_pref.yaml
+helm install kyverno kyverno/kyverno -n kyverno --create-namespace \
+  --values feast_scheduling_pref.yaml
+
+curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/kyverno_cluster_policy.yaml
+kubectl apply -f kyverno_cluster_policy.yaml
 
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/prerequisite_setup.yaml
 kubectl apply -f prerequisite_setup.yaml
