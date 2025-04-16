@@ -25,7 +25,7 @@ spec:
   feastProjectDir:
     git:
       url: https://github.com/feast-dev/feast-credit-score-local-tutorial
-      ref: 598a270
+      ref: 98c0c7b
   services:
     offlineStore:
       persistence:
@@ -40,7 +40,9 @@ spec:
       server:
         envFrom:
         - secretRef:
-            name: postgres-secret
+            name: feast-secret
+        - configMapRef:
+            name: feast-config
         env:
         - name: MPLCONFIGDIR
           value: /tmp
