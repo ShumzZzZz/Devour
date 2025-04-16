@@ -12,7 +12,7 @@ spec:
               kinds: [Deployment, DaemonSet, StatefulSet, Job]
               namespaces: [feast]
       mutate:
-        overlay:
+        patchStrategicMerge:
           spec:
             template:
               spec:
@@ -32,7 +32,7 @@ spec:
               kinds: [Pod]
               namespaces: [feast]
       mutate:
-        overlay:
+        patchStrategicMerge:
           spec:
             nodeSelector:
               dedicated: featurestore
@@ -50,7 +50,7 @@ spec:
               kinds: [CronJob]
               namespaces: [feast]
       mutate:
-        overlay:
+        patchStrategicMerge:
           spec:
             jobTemplate:
               spec:
