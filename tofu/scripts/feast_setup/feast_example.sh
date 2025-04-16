@@ -1,16 +1,14 @@
 #!/bin/bash
 
-
-
 kubectl create ns feast
 kubectl config set-context --current --namespace feast
 
-#kubectl label nodes ip-10-10-1-10 dedicated=featurestore
-#kubectl label nodes ip-10-10-1-132 dedicated=featurestore
-#kubectl label nodes ip-10-10-1-51 dedicated=featurestore
-#kubectl taint nodes ip-10-10-1-10 dedicated=featurestore:NoExecute
-#kubectl taint nodes ip-10-10-1-132 dedicated=featurestore:NoExecute
-#kubectl taint nodes ip-10-10-1-51 dedicated=featurestore:NoExecute
+#kubectl label nodes ip-10-10-1-140 dedicated=featurestore
+#kubectl label nodes ip-10-10-1-175 dedicated=featurestore
+#kubectl label nodes ip-10-10-1-226 dedicated=featurestore
+#kubectl taint nodes ip-10-10-1-140 dedicated=featurestore:NoExecute
+#kubectl taint nodes ip-10-10-1-175 dedicated=featurestore:NoExecute
+#kubectl taint nodes ip-10-10-1-226 dedicated=featurestore:NoExecute
 
 kubectl label nodes <nodes> dedicated=featurestore
 kubectl taint nodes <nodes> dedicated=featurestore:NoExecute
@@ -39,8 +37,7 @@ kubectl apply -f feast.yaml
 
 kubectl wait --for=condition=available --timeout=8m deployment/feast-example
 
-kubectl exec deploy/postgres -- psql -h localhost -U feast feast -c '\dt'
-
+kubectl exec deployment/postgres-feast -- psql -h localhost -U feastuser feastdb -c '\dt'
 kubectl exec deployment/feast-example -itc online -- feast version
 
 
