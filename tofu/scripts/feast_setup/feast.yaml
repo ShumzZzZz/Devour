@@ -6,10 +6,10 @@ metadata:
 stringData:
   redis: |
     type: redis
-    connection_string: redis.feast.svc.cluster.local:6379
+    connection_string: redis-service.feast.svc.cluster.local:6379
   sql: |
     registry_type: sql
-    path: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres.feast.svc.cluster.local:5432/${POSTGRES_DB}
+    path: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-service.feast.svc.cluster.local:5432/${POSTGRES_DB}
     cache_ttl_seconds: 60
     sqlalchemy_config_kwargs:
         echo: false
@@ -25,7 +25,7 @@ spec:
   feastProjectDir:
     git:
       url: https://github.com/feast-dev/feast-credit-score-local-tutorial
-      ref: 598a270
+      ref: 98c0c7b
   services:
     offlineStore:
       persistence:
@@ -40,7 +40,9 @@ spec:
       server:
         envFrom:
         - secretRef:
-            name: postgres-secret
+            name: feast-secret
+        - configMapRef:
+            name: feast-config
         env:
         - name: MPLCONFIGDIR
           value: /tmp

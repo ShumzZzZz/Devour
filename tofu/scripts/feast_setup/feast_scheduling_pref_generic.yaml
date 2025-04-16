@@ -1,0 +1,7 @@
+nodeSelector:
+  dedicated: featurestore
+tolerations:
+- effect: NoExecute
+  key: dedicated
+  operator: Equal
+  value: featurestore

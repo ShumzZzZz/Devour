@@ -208,8 +208,8 @@ resource "aws_instance" "k8s_control_plane_nodes" {
   vpc_security_group_ids = [aws_security_group.devour_k8s.id]
 
   root_block_device {
-    volume_size = 10
-    volume_type = "gp2"
+    volume_size = 20
+    volume_type = "gp3"
   }
 
   tags = {
@@ -228,8 +228,8 @@ resource "aws_instance" "k8s_worker_nodes" {
   vpc_security_group_ids = [aws_security_group.devour_k8s.id]
 
   root_block_device {
-    volume_size = 8
-    volume_type = "gp2"
+    volume_size = 20
+    volume_type = "gp3"
   }
 
   tags = {

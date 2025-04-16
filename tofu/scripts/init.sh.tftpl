@@ -140,6 +140,7 @@ if [[ ",${cp_private_ips}," == *",$${current_ip},"* ]]; then
     ./get_helm.sh
 
     helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+    helm repo add kyverno https://kyverno.github.io/kyverno/
 	helm repo update
 
 	helm upgrade --install aws-ebs-csi-driver \
