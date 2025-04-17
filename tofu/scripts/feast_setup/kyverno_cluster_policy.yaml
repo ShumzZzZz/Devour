@@ -2,6 +2,7 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: inject-pod-scheduling
+  namespace: kyverno
 spec:
   # 1) Deployment, DaemonSet, StatefulSet, Job
   rules:
