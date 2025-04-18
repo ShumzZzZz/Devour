@@ -8,7 +8,6 @@ stringData:
     type: redis
     connection_string: redis-service.feast.svc.cluster.local:6379
   sql: |
-    registry_type: sql
     path: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-service.feast.svc.cluster.local:5432/${POSTGRES_DB}
     cache_ttl_seconds: 60
     sqlalchemy_config_kwargs:
@@ -57,3 +56,4 @@ spec:
             type: sql
             secretRef:
               name: feast-data-stores
+    ui: {}
