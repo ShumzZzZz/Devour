@@ -8107,10 +8107,9 @@ spec:
     targetPort: 8443
   selector:
     control-plane: controller-manager
-
 ---
 apiVersion: apps/v1
-kind: Deployment # TODO: add spec
+kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/managed-by: kustomize
@@ -8130,13 +8129,6 @@ spec:
       labels:
         control-plane: controller-manager
     spec:
-      nodeSelector: # TODO
-        dedicated: featurestore
-      tolerations: # TODO
-        - key: dedicated
-          operator: Equal
-          value: featurestore
-          effect: NoExecute
       containers:
       - args:
         - --metrics-bind-address=:8443
