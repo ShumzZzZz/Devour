@@ -15,6 +15,11 @@ curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provisi
 helm install kyverno kyverno/kyverno -n kyverno --create-namespace \
   --values feast_scheduling_pref.yaml
 
+k wait --for=condition=available --timeout=5m deployment/kyverno-admission-controller -n kyverno
+k wait --for=condition=available --timeout=5m deployment/kyverno-background-controller -n kyverno
+k wait --for=condition=available --timeout=5m deployment/kyverno-cleanup-controller -n kyverno
+k wait --for=condition=available --timeout=5m deployment/kyverno-reports-controller -n kyverno
+
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/kyverno_cluster_policy.yaml
 k apply -f kyverno_cluster_policy.yaml
 
