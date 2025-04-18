@@ -56,4 +56,12 @@ spec:
             type: sql
             secretRef:
               name: feast-data-stores
-    ui: {}
+    ui:
+      server:
+        envFrom:
+        - secretRef:
+            name: feast-secret
+        - configMapRef:
+            name: feast-config
+      loglevel: debug
+
