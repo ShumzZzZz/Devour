@@ -57,11 +57,10 @@ spec:
             secretRef:
               name: feast-data-stores
     ui:
-      server:
-        envFrom:
-        - secretRef:
-            name: feast-secret
-        - configMapRef:
-            name: feast-config
-      loglevel: debug
+      envFrom:
+      - secretRef:
+          name: feast-secret
+      - configMapRef:
+          name: feast-config
+      logLevel: debug
 
