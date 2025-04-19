@@ -29,7 +29,7 @@ k apply -f prerequisite_setup.yaml
 k wait --for=condition=available --timeout=5m deployment/redis-feast
 k wait --for=condition=available --timeout=5m deployment/postgres-feast
 
-curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/Devour/refs/heads/provision-with-opentofu/tofu/scripts/feast_setup/feast_operator_install.yaml
+curl -sSL https://raw.githubusercontent.com/feast-dev/feast/refs/heads/master/infra/feast-operator/dist/install.yaml -o feast_operator_install.yaml
 k apply -f feast_operator_install.yaml
 
 k wait --for=condition=available --timeout=5m deployment/feast-operator-controller-manager -n feast
@@ -41,7 +41,6 @@ k wait --for=condition=available --timeout=8m deployment/feast-example
 
 k exec deployment/postgres-feast -- psql -h localhost -U feastuser feastdb -c '\dt'
 k exec deployment/feast-example -itc online -- feast version
-
 
 
 k delete -f feast.yaml
