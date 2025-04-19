@@ -1,0 +1,64 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: feast-store
+  namespace: feast
+spec:
+  hosts:
+  - feast.eda.io
+  gateways:
+  - istio-system/web-ingressgateway
+
+  http:
+  # 1) Redis Insight UI
+  - name: redis-insight-route
+    match:
+    - uri:
+        prefix: /redis-insight
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: redis-service
+        port:
+          number: 8001
+
+  # 2) Metadata UI (pgAdmin)
+  - name: metadata-route
+    match:
+    - uri:
+        prefix: /metadata
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: pgadmin-service
+        port:
+          number: 5050
+
+  # 3) Default: Feast online store
+  - name: default-route
+    match:
+    - uri:
+        prefix: /
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: feast-example-online
+        port:
+          number: 80
+    timeout: 1800s
+
+  # 4) Feast UI
+  - name: ui-route
+    match:
+    - uri:
+        prefix: /dashboard
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: feast-example-ui
+        port:
+          number: 80
