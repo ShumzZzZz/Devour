@@ -5,7 +5,7 @@ metadata:
   namespace: feast
 spec:
   hosts:
-  - 52-10-229-69.nip.io
+  - 35-94-68-242.nip.io
   gateways:
   - feast-gateway
 
@@ -40,7 +40,7 @@ spec:
   - name: ui-route
     match:
     - uri:
-        prefix: /dashboard
+        prefix: /ui
     rewrite:
       uri: /
     route:
