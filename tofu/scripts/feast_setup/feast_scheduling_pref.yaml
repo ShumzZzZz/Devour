@@ -1,0 +1,39 @@
+admissionController:
+  replicas: 3
+  nodeSelector:
+    dedicated: featurestore
+  tolerations:
+  - effect: NoExecute
+    key: dedicated
+    operator: Equal
+    value: featurestore
+
+backgroundController:
+  replicas: 2
+  nodeSelector:
+    dedicated: featurestore
+  tolerations:
+  - effect: NoExecute
+    key: dedicated
+    operator: Equal
+    value: featurestore
+
+cleanupController:
+  replicas: 2
+  nodeSelector:
+    dedicated: featurestore
+  tolerations:
+  - effect: NoExecute
+    key: dedicated
+    operator: Equal
+    value: featurestore
+
+reportsController:
+  replicas: 2
+  nodeSelector:
+    dedicated: featurestore
+  tolerations:
+  - effect: NoExecute
+    key: dedicated
+    operator: Equal
+    value: featurestore
