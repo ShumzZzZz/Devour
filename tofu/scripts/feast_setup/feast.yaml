@@ -26,6 +26,19 @@ spec:
       url: https://github.com/feast-dev/feast-credit-score-local-tutorial
       ref: 98c0c7b
   services:
+    registry:
+      local:
+        persistence:
+          store:
+            type: sql
+            secretRef:
+              name: feast-data-stores
+        server:
+          envFrom:
+          - secretRef:
+              name: feast-secret
+          - configMapRef:
+              name: feast-config
     offlineStore:
       persistence:
         file:
@@ -49,19 +62,6 @@ spec:
           requests:
             cpu: 150m
             memory: 128Mi
-    registry:
-      local:
-        persistence:
-          store:
-            type: sql
-            secretRef:
-              name: feast-data-stores
-        server:
-          envFrom:
-          - secretRef:
-              name: feast-secret
-          - configMapRef:
-              name: feast-config
     ui:
       envFrom:
       - secretRef:
