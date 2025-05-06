@@ -1,0 +1,27 @@
+name: production
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - demo_project/production**
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+            FEAST_VERSION: "0.49.0"
+            FEAST_DEPLOYMENT_URL: "placeholder"
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set up Python 3.12
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.12"
+            - name: Install Feast
+              run: pip install 'feast==${{ env.FEAST_VERSION }}'
+            - name: Update Feature Store Infra
+              run: |
+                  cd demo_project/production
+                  feast apply
