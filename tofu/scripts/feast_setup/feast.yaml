@@ -17,14 +17,14 @@ stringData:
 apiVersion: feast.dev/v1alpha1
 kind: FeatureStore
 metadata:
-  name: recommendation-fs
+  name: example
   namespace: feast
 spec:
   feastProject: devour
   feastProjectDir:
     git:
       url: https://github.com/ShumzZzZz/devour
-      ref: a94e7b6
+      ref: 4691c16
       featureRepoPath: devour_feature_store
   services:
     registry:
