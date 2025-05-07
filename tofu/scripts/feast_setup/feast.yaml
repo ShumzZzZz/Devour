@@ -17,14 +17,15 @@ stringData:
 apiVersion: feast.dev/v1alpha1
 kind: FeatureStore
 metadata:
-  name: example
+  name: recommendation-fs
   namespace: feast
 spec:
-  feastProject: credit_scoring_local
+  feastProject: devour
   feastProjectDir:
     git:
-      url: https://github.com/feast-dev/feast-credit-score-local-tutorial
-      ref: 98c0c7b
+      url: https://github.com/ShumzZzZz/devour
+      ref: a94e7b6
+      featureRepoPath: devour_feature_store
   services:
     registry:
       local:
@@ -39,6 +40,7 @@ spec:
               name: feast-secret
           - configMapRef:
               name: feast-config
+          logLevel: debug
     offlineStore:
       persistence:
         file:
@@ -62,6 +64,7 @@ spec:
           requests:
             cpu: 150m
             memory: 128Mi
+        logLevel: debug
     ui:
       envFrom:
       - secretRef:
