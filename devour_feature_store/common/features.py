@@ -4,7 +4,6 @@ import pandas as pd
 from feast import (
 	FeatureView,
 	Field,
-	ValueType
 )
 from feast.types import Float32, Int64
 from feast.on_demand_feature_view import on_demand_feature_view
