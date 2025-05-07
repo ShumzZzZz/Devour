@@ -5,7 +5,7 @@ from feast import (
 	FeatureView,
 	Field,
 )
-from feast.types import Float32, Int64
+from feast.types import Float32, Int64, String
 from feast.on_demand_feature_view import on_demand_feature_view
 
 from common.data_sources import *
@@ -18,6 +18,7 @@ product_general_score_fv = FeatureView(
 	schema=[
 		Field(name="product_id", dtype=Int64),
 		Field(name="general_score", dtype=Float32),
+		Field(name="event_timestamp", dtype=String),
 	],
 	source=product_general_score_source
 )
