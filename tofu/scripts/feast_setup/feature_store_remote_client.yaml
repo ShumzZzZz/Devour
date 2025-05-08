@@ -1,8 +1,10 @@
-entity_key_serialization_version: 3
-project: credit_scoring_local
+project: devour
+provider: local
 registry:
   registry_type: remote
   path: localhost:8001
 online_store:
   type: remote
   path: localhost:8002
+
+entity_key_serialization_version: 3
