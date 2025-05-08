@@ -1,0 +1,33 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: ingressgateway-hostport
+  namespace: istio-system
+spec:
+  profile: default
+  components:
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      label:
+        istio: ingressgateway
+      k8s:
+        # Keep the Service on ClusterIP
+        service:
+          type: ClusterIP
+        podTemplate:
+          spec:
+            # Share the host network namespace
+            hostNetwork: true
+            # Expose container ports directly on the host
+            containers:
+            - name: istio-proxy
+              ports:
+              - name: http2
+                containerPort: 80
+                hostPort: 80
+                protocol: TCP
+              - name: https
+                containerPort: 443
+                hostPort: 443
+                protocol: TCP
