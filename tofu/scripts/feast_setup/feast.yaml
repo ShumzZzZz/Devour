@@ -24,8 +24,8 @@ spec:
   feastProjectDir:
     git:
       url: https://github.com/ShumzZzZz/devour
-      ref: 1843b1f
-      featureRepoPath: devour_feature_store
+      ref: 8a4bdbc
+      featureRepoPath: devour_feature_store # demo_project/staging/feature_repo
   services:
     registry:
       local:
