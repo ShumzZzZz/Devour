@@ -18,7 +18,7 @@ def run_test():
 	fs.push(
 		push_source_name="push_source",
 		df=feature_df,
-		to=PushMode.ONLINE
+		to=PushMode.ONLINE  # _AND_OFFLINE
 	)
 
 
