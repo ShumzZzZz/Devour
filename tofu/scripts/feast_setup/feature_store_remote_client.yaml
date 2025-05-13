@@ -5,6 +5,6 @@ registry:
   path: localhost:8001
 online_store:
   type: remote
-  path: localhost:8002
+  path: http://localhost:8002
 
 entity_key_serialization_version: 3
