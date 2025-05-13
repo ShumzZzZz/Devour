@@ -16,7 +16,7 @@ def run_test():
 	feature_df["event_timestamp"] = pd.to_datetime(feature_df["event_timestamp"])
 
 	fs.push(
-		push_source_name="push_source",
+		push_source_name="general_score_push_source",
 		df=feature_df,
 		to=PushMode.ONLINE  # _AND_OFFLINE
 	)
