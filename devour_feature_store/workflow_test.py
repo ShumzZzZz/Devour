@@ -7,7 +7,7 @@ def run_test():
 	fs = FeatureStore()
 
 	data = {
-		"product_id": [-9999],
+		"product_id": [9],
 		"general_score": [0.009009009],
 		"event_timestamp": ["2025-05-08 14:24:00.000000"]
 	}

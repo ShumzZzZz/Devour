@@ -34,5 +34,6 @@ product_general_score_fresh_fv = FeatureView(
 	],
 	online=True,
 	# offline=True,
-	source=product_general_score_source
+	source=general_score_push_source
+	# has to be push source, otherwise the push source will not be registered and found
 )

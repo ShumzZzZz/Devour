@@ -11,7 +11,9 @@ product_general_score_source = FileSource(
     timestamp_field="event_timestamp",
 )
 
-push_source = PushSource(
-    name="push_source",
+general_score_push_source = PushSource(
+    name="general_score_push_source",
     batch_source=product_general_score_source
 )
+
+# cannot be named as push_source,otherwise will raise error
