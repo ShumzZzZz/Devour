@@ -1,6 +1,7 @@
 #!/bin/bash
 alias k='kubectl'
 alias kd='kubectl describe'
+alias kp='k port-forward'
 
 k create ns feast
 k config set-context --current --namespace feast
@@ -40,22 +41,28 @@ sleep 3
 k wait --for=condition=available --timeout=8m deployment/feast-example
 
 
+
+
+
+
 k exec deployment/postgres-feast -- psql -h localhost -U feastuser feastdb -c '\dt'
 k exec deployment/feast-example -itc online -- feast version
+
+
 
 # cronjob & customization
 kubectl get feast/example -o jsonpath='{.status.applied.cronJob.containerConfigs.commands}'
 feast materialize-incremental $(date -u +'%Y-%m-%dT%H:%M:%S')
-kubectl patch feast/example --patch '{"spec":{"cronJob":{"containerConfigs":{"commands":["pip install -r ../requirements.txt","cd ../ && python run.py"]}}}}' --type=merge
+#kubectl patch feast/example --patch '{"spec":{"cronJob":{"containerConfigs":{"commands":["pip install -r ../requirements.txt","cd ../ && python run.py"]}}}}' --type=merge
 
 k create job --from=cronjob/feast-example feast-example-apply
 k wait --for=condition=complete --timeout=8m job/feast-example-apply
 k logs job/feast-example-apply --all-containers=true
 
 # port-forward
-k port-forward svc/feast-example-registry 8001:80 &
-k port-forward svc/feast-example-online 8002:80 &
-k port-forward svc/feast-example-ui 8003:80 &
+kp svc/feast-example-registry 8001:80 &
+kp svc/feast-example-online 8002:80 &
+kp svc/feast-example-ui 8003:80 &
 
 helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
