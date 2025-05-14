@@ -2,8 +2,8 @@
 
 curl "http://localhost:8002/get-online-features" \
 	--json '{
-		"features": ["product_general_score:general_score", "product_general_score:event_timestamp"],
-		"entities": {"product_id": [0]}
+		"features": ["product_general_score_fresh:general_score"],
+		"entities": {"product_id": [9]}
 	}' \
 	| jq
 
