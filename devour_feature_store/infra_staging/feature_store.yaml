@@ -8,8 +8,10 @@ registry:
         echo: false
         pool_pre_ping: true
 online_store:
-    type: redis
-    connection_string: "localhost:8002"
+#    type: redis
+#    connection_string: "localhost:8002"
+    type: remote
+    path: http://localhost:8002
 offline_store:
     type: duckdb
 entity_key_serialization_version: 3
