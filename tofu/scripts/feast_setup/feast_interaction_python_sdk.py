@@ -1,4 +1,7 @@
-from feast import FeatureStore
+import datetime
+
+from feast import FeatureStore, Project
+
 
 fs = FeatureStore(repo_path='/Users/shuminzheng/PycharmProjects/devour/devour_feature_store/infra_staging')
 # only works if registry db is exposed directly as above
@@ -7,6 +10,9 @@ fs = FeatureStore(repo_path='/Users/shuminzheng/PycharmProjects/devour/devour_fe
 # fs = FeatureStore(repo_path='/Users/shuminzheng/PycharmProjects/devour/devour_feature_store')
 
 
+p = Project(name="devour", tags={"owner": "shumin"})
+
+fs.apply(objects=[p])
 
 for p in fs.registry.list_projects():
 	print(p)
@@ -16,9 +22,15 @@ for p in fs.registry.list_projects():
 for fv in fs.list_feature_views():
 	print(fv)
 
+# fs.materialize(
+# 	feature_views=["product_general_score_fresh"],
+# 	start_date=datetime.datetime(2022, 1, 1),
+# 	end_date=datetime.datetime.now()
+# )
+
 res = fs.get_online_features(
 	features=[
-		"product_general_score_fresh:general_score"],
+		"product_general_score:general_score"],
 	entity_rows=[
 		{"product_id": 1001},
 		{"product_id": 9}
