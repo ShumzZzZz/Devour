@@ -86,8 +86,8 @@ for pair in "control-plane:${cp_private_ips}" "worker:${wk_private_ips}"; do
         node_name="$${prefix}-$${idx}"
         if [ "$${ip}" == "$${current_ip}" ]; then
             echo "Node Name is $${node_name}"
-            if ! grep -q "export PS1=\"$${node_name}> \"" /home/ubuntu/.bashrc; then
-                echo "export PS1=\"$${node_name}> \"" >> /home/ubuntu/.bashrc
+            if ! grep -q "export PS1=\"$$PS1 ($${node_name})> \"" /home/ubuntu/.bashrc; then
+                echo "export PS1=\"$$PS1 ($${node_name})> \"" >> /home/ubuntu/.bashrc
             fi
         fi
         if ! grep -Eq "^$${ip}[[:space:]]+$${node_name}$" /etc/hosts; then
@@ -101,10 +101,6 @@ sudo snap install yq --classic
 
 # on the current ip in the ${cp_private_ips} list , run kubeadm init
 if [[ ",${cp_private_ips}," == *",$${current_ip},"* ]]; then
-    # echo "#############################"
-    # echo "current ip: $${current_ip}, cp_private_ips: $${cp_private_ips}"
-    # echo "in control plane"
-    # echo "#############################"
 
     # switch to ubuntu user
     su - ubuntu <<-'EOF'
@@ -133,6 +129,10 @@ if [[ ",${cp_private_ips}," == *",$${current_ip},"* ]]; then
     export DATASTORE_TYPE=kubernetes
     export KUBECONFIG=$${HOME}/.kube/config
 
+    echo "alias k='kubectl'" >> $${HOME}/.bashrc
+    echo "alias kd='k describe'" >> $${HOME}/.bashrc
+	echo "alias kp='k port-forward'" >> $${HOME}/.bashrc
+
     echo "installing helm"
     cd $${HOME}
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -150,12 +150,8 @@ if [[ ",${cp_private_ips}," == *",$${current_ip},"* ]]; then
 	# kubectl get pods -n kube-system -l app.kubernetes.io/name=aws-ebs-csi-driver
 	EOF
 
-    # if the node is a worker, run kubeadm join
-else
-    # echo "#############################"
-    # echo "current ip: $${current_ip}, cp_private_ips: ${cp_private_ips}"
-    # echo "in worker"
-    # echo "#############################"
+
+else # if the node is a worker, run kubeadm join
     su - ubuntu <<-'EOF'
     cd $${HOME}
     until aws s3 ls s3://feast-shumin/join-command-${timestamp_suffix}.sh --region us-west-2; do
