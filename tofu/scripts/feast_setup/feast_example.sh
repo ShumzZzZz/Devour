@@ -1,7 +1,4 @@
 #!/bin/bash
-alias k='kubectl'
-alias kd='kubectl describe'
-alias kp='k port-forward'
 
 k create ns feast
 k config set-context --current --namespace feast
@@ -23,6 +20,18 @@ k wait --for=condition=available --timeout=5m deployment/kyverno-reports-control
 
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/kyverno_cluster_policy.yaml
 k apply -f kyverno_cluster_policy.yaml
+
+
+git clone https://github.com/prometheus-operator/kube-prometheus.git
+k apply --server-side -f kube-prometheus/manifests/setup
+k wait \
+	--for condition=Established \
+	--all CustomResourceDefinition \
+	--namespace=monitoring
+k apply -f kube-prometheus/manifests/
+# https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/access-ui.md
+
+
 
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/prerequisite_setup.yaml
 k apply -f prerequisite_setup.yaml
@@ -46,8 +55,7 @@ k wait --for=condition=available --timeout=8m deployment/feast-example
 
 
 k exec deployment/postgres-feast -- psql -h localhost -U feastuser feastdb -c '\dt'
-k exec deployment/feast-example -itc online -- feast version
-
+k exec deployment/feast-example -itc online -- bash # feast version
 
 
 # cronjob & customization
@@ -61,11 +69,18 @@ k logs job/feast-example-apply --all-containers=true
 
 # port-forward
 kp svc/feast-example-registry 8001:80 &
+# kp svc/postgre-service 8001:5432 &
 kp svc/feast-example-online 8002:80 &
 kp svc/feast-example-ui 8003:80 &
 
+kill "$(lsof -i :8001 | awk 'NR>1 {print $2}' | sort -nu)"
+kill "$(lsof -i :8002 | awk 'NR>1 {print $2}' | sort -nu)"
+kill "$(lsof -i :8003 | awk 'NR>1 {print $2}' | sort -nu)"
+
 helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard \
+	--create-namespace --namespace kubernetes-dashboard \
+	--set metricsScraper.enabled=true
 
 kubectl create serviceaccount admin-user -n kubernetes-dashboard
 kubectl create clusterrolebinding admin-user-binding \
@@ -139,6 +154,7 @@ k apply -f istio-vs.yaml
 #istioctl install -f istio-hostport-ingress.yaml -y
 
 
+k delete --ignore-not-found=true -f kube-prometheus/manifests/ -f kube-prometheus/manifests/setup
 k delete -f feast.yaml
 k delete -f feast_operator_install.yaml
 k delete -f prerequisite_setup.yaml
