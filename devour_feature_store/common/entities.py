@@ -7,14 +7,14 @@ from feast import (
     ValueType
 )
 
-user = Entity(
-    name="user",
+et_user = Entity(
+    name="et_user",
     join_keys=["user_id"],
     value_type=ValueType.INT64,
     description="User ID"
 )
-product = Entity(
-    name="product",
+et_product = Entity(
+    name="et_product",
     join_keys=["product_id"],
     value_type=ValueType.INT64,
     description="Product ID"

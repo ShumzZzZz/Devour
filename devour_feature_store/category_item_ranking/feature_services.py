@@ -1,18 +1,18 @@
 from feast import FeatureService
 from common.features import *
 
-category_fs_v1 = FeatureService(
-	name="category_ranking_generic_feature_service",
+fs_category_ranking_generic_v1 = FeatureService(
+	name="fs_category_ranking_generic_v1",
 	features=[
-		product_general_score_fv[["general_score"]],
+		fv_product_general_score[["general_score"]],
 	],
-	owner="shumin.zheng"
+	owner="shumin"
 )
 
-category_fs_v2 = FeatureService(
-	name="category_ranking_generic_feature_service_fresh",
+fs_category_ranking_generic_v2 = FeatureService(
+	name="fs_category_ranking_generic_v2",
 	features=[
-		product_general_score_fresh_fv[["general_score"]],
+		fv_push_product_general_score[["general_score"]],
 	],
-	owner="shumin.zheng"
+	owner="shumin"
 )
