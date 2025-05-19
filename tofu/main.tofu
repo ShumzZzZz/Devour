@@ -109,6 +109,15 @@ resource "aws_vpc_security_group_ingress_rule" "allow_nodeports" {
   to_port           = 32258
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow_nodeports" {
+  description       = "allow kubectl"
+  security_group_id = aws_security_group.devour_k8s.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 6443
+  ip_protocol       = "tcp"
+  to_port           = 6443
+}
+
 resource "aws_vpc_security_group_ingress_rule" "allow_calico_ipip" {
   description       = "Allow Calico IP in IP encapsulation traffic on control plane nodes"
   security_group_id = aws_security_group.devour_k8s.id
