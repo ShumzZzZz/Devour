@@ -15,3 +15,23 @@ ds_push_product_general_score = PushSource(
     batch_source=ds_file_product_general_score
 )
 
+
+ds_push_product_bestseller_ethnicity_tag = PushSource(
+    name="ds_push_product_bestseller_ethnicity_tag",
+    batch_source=FileSource(
+        name="ds_file_product_bestseller_ethnicity_tag",
+        path="data/bestseller_features/product_bestseller_ethnicity_tag.parquet",
+        file_format=ParquetFormat(),
+        timestamp_field="event_timestamp",
+    )
+)
+
+ds_push_user_propensity_score = PushSource(
+    name="ds_push_user_propensity_score",
+    batch_source=FileSource(
+        name="ds_file_user_propensity",
+        path="data/user_features/user_propensity_score.parquet",
+        file_format=ParquetFormat(),
+        timestamp_field="event_timestamp",
+    )
+)

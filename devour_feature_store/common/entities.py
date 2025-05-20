@@ -1,6 +1,3 @@
-from datetime import timedelta
-
-import pandas as pd
 
 from feast import (
     Entity,
@@ -18,4 +15,11 @@ et_product = Entity(
     join_keys=["product_id"],
     value_type=ValueType.INT64,
     description="Product ID"
+)
+
+et_ethnicity_user = Entity(
+    name="et_user_ethnicity",
+    join_keys=["ethnicity_user"],
+    value_type=ValueType.STRING,
+    description="User Ethnicity"
 )

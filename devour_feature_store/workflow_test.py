@@ -5,7 +5,7 @@ from datetime import datetime
 from feast.data_source import PushMode
 
 
-def run_test(mode='online'):
+def run_test_cat(mode='online'):
 	fs = FeatureStore()
 
 	n = 1_000_000
@@ -43,5 +43,26 @@ def run_test(mode='online'):
 	)
 
 
+def run_test_bestseller(mode='online'):
+	fs = FeatureStore()
+
+	df = pd.read_parquet('data/bestseller_features/product_bestseller_ethnicity_tag.parquet')
+
+	fs.push(
+		push_source_name="ds_push_product_bestseller_ethnicity_tag",
+		df=df,
+		to=PushMode.ONLINE if mode == 'online' else PushMode.ONLINE_AND_OFFLINE
+	)
+
+	df = pd.read_parquet('data/bestseller_features/user_propensity_score.parquet')
+
+	fs.push(
+		push_source_name="ds_push_user_propensity_score",
+		df=df,
+		to=PushMode.ONLINE if mode == 'online' else PushMode.ONLINE_AND_OFFLINE
+	)
+
+
 if __name__ == "__main__":
-	run_test()
+	# run_test_cat()
+	run_test_bestseller()
