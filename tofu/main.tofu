@@ -109,7 +109,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_nodeports" {
   to_port           = 32258
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_nodeports" {
+resource "aws_vpc_security_group_ingress_rule" "allow_kubectl" {
   description       = "allow kubectl"
   security_group_id = aws_security_group.devour_k8s.id
   cidr_ipv4         = "0.0.0.0/0"
