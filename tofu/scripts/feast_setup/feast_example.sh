@@ -30,6 +30,7 @@ k wait \
 	--namespace=monitoring
 k apply -f kube-prometheus/manifests/
 # https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/access-ui.md
+# kp --namespace monitoring svc/grafana 3000
 
 
 
