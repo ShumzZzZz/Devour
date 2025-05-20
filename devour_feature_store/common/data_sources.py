@@ -30,7 +30,7 @@ ds_push_user_propensity_score = PushSource(
     name="ds_push_user_propensity_score",
     batch_source=FileSource(
         name="ds_file_user_propensity",
-        path="data/user_features/user_propensity_score.parquet",
+        path="data/bestseller_features/user_propensity_score.parquet",
         file_format=ParquetFormat(),
         timestamp_field="event_timestamp",
     )
