@@ -61,6 +61,7 @@ k exec deployment/feast-example -itc online -- bash # feast version
 # cronjob & customization
 kubectl get feast/example -o jsonpath='{.status.applied.cronJob.containerConfigs.commands}'
 feast materialize-incremental $(date -u +'%Y-%m-%dT%H:%M:%S')
+#feast materialize '2022-01-01T00:00:00' $(date -u +"%Y-%m-%dT%H:%M:%S")
 #kubectl patch feast/example --patch '{"spec":{"cronJob":{"containerConfigs":{"commands":["pip install -r ../requirements.txt","cd ../ && python run.py"]}}}}' --type=merge
 
 k create job --from=cronjob/feast-example feast-example-apply
