@@ -155,11 +155,8 @@ kubectl -n istio-system patch svc istio-ingressgateway --type='merge' -p '{
   }
 }'
 
-curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/feast-gateway.yaml
-k apply -f feast-gateway.yaml
-
-curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/istio-vs.yaml
-k apply -f istio-vs.yaml
+curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/service_exposure/gateway_virtualService.yaml
+k apply -f gateway_virtualService.yaml
 
 #curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/istio-hostport-ingress.yaml
 #istioctl install -f istio-hostport-ingress.yaml -y
