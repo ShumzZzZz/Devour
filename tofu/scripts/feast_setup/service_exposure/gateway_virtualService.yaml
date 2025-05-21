@@ -23,7 +23,7 @@ spec:
   gateways:
   - feast-gateway
   hosts:
-  - 35-94-68-242.nip.io
+  - 44-242-235-125.nip.io
 
   tcp:
     - match:
