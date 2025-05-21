@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-ingressgateway
+  namespace: istio-system
+  labels:
+    app: istio-ingressgateway
+    istio: ingressgateway
+spec:
+  type: NodePort
+  selector:
+    istio: ingressgateway
+  ports:
+    - name: status-port
+      port: 15021
+      targetPort: 15021
+      protocol: TCP
+      nodePort: 31475
+    - name: http2
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+      nodePort: 32258
+    - name: https
+      port: 443
+      targetPort: 8443
+      protocol: TCP
+      nodePort: 30397
+    - name: tcp-postgres
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
+      nodePort: 31432
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: feast-gateway
+  namespace: feast
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 5432
+      name: tcp-registrydb
+      protocol: TCP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: feast-vs
+  namespace: feast
+spec:
+  gateways:
+  - feast-gateway
+  hosts:
+  - 35-94-68-242.nip.io
+
+  tcp:
+    - match:
+        - port: 5432
+      route:
+        - destination:
+            host: postgres-service
+            port:
+              number: 5432
+
+  http:
+  # 1) Redis Insight UI
+  - name: redis-insight-route
+    match:
+    - uri:
+        prefix: /redis-insight
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: redis-service.feast.svc.cluster.local
+        port:
+          number: 8001
+
+#  # 2) Metadata UI (pgAdmin)
+#  - name: metadata-route
+#    match:
+#    - uri:
+#        prefix: /metadata
+#    rewrite:
+#      uri: /
+#    route:
+#    - destination:
+#        host: pgadmin-service.feast.svc.cluster.local
+#        port:
+#          number: 5050
+#
+#  # 3) Feast UI
+#  - name: ui-route
+#    match:
+#    - uri:
+#        prefix: /ui
+#    rewrite:
+#      uri: /
+#    route:
+#    - destination:
+#        host: feast-example-ui.feast.svc.cluster.local
+#        port:
+#          number: 80
+
+  # 4) Default: Feast online store
+  - name: default-route
+    match:
+    - uri:
+        prefix: /
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: feast-example-online.feast.svc.cluster.local
+        port:
+          number: 80
+    timeout: 1800s
+
