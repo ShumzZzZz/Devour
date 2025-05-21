@@ -230,14 +230,14 @@ resource "aws_instance" "k8s_control_plane_nodes" {
 resource "aws_instance" "k8s_worker_nodes" {
   count                  = 2
   ami                    = "ami-03f8acd418785369b"
-  instance_type          = "t2.large"
+  instance_type          = "t2.xlarge"
   key_name               = "shumin-test"
   iam_instance_profile   = aws_iam_instance_profile.ec2_k8s_node_profile.name
   subnet_id              = aws_subnet.public_subnet_a.id
   vpc_security_group_ids = [aws_security_group.devour_k8s.id]
 
   root_block_device {
-    volume_size = 20
+    volume_size = 100
     volume_type = "gp3"
   }
 
