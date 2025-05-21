@@ -12,7 +12,13 @@ spec:
       name: tcp-registrydb
       protocol: TCP
     hosts:
-    - "*"
+      - "*"
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+      - "*"
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -23,7 +29,7 @@ spec:
   gateways:
   - feast-gateway
   hosts:
-  - 44-242-235-125.nip.io
+  - "*"
 
   tcp:
     - match:
@@ -33,7 +39,6 @@ spec:
             host: postgres-service
             port:
               number: 5432
-
   http:
   # 1) Redis Insight UI
   - name: redis-insight-route
