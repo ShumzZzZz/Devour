@@ -119,32 +119,41 @@ spec:
 EOF
 istioctl install -f istio-cni.yaml -y
 
-kubectl -n istio-system patch svc istio-ingressgateway \
-  -p '{
-    "spec": {
-      "type": "NodePort",
-      "ports": [
-        {
-          "name": "status-port",
-          "port": 15021,
-          "targetPort": 15021,
-          "nodePort": 31475
-        },
-        {
-          "name": "http2",
-          "port": 80,
-          "targetPort": 8080,
-          "nodePort": 32258
-        },
-        {
-          "name": "https",
-          "port": 443,
-          "targetPort": 8443,
-          "nodePort": 30397
-        }
-      ]
-    }
-  }'
+kubectl -n istio-system patch svc istio-ingressgateway --type='merge' -p '{
+  "spec": {
+    "type": "NodePort",
+    "ports": [
+      {
+        "name": "status-port",
+        "port": 15021,
+        "targetPort": 15021,
+        "protocol": "TCP",
+        "nodePort": 30021
+      },
+      {
+        "name": "http2",
+        "port": 80,
+        "targetPort": 8080,
+        "protocol": "TCP",
+        "nodePort": 30080
+      },
+      {
+        "name": "https",
+        "port": 443,
+        "targetPort": 8443,
+        "protocol": "TCP",
+        "nodePort": 30443
+      },
+      {
+        "name": "tcp-postgres",
+        "port": 5432,
+        "targetPort": 5432,
+        "protocol": "TCP",
+        "nodePort": 30432
+      }
+    ]
+  }
+}'
 
 curl -sSLO https://raw.githubusercontent.com/ShumzZzZz/devour/refs/heads/main/tofu/scripts/feast_setup/feast-gateway.yaml
 k apply -f feast-gateway.yaml
