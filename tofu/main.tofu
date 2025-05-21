@@ -104,9 +104,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_nodeports" {
   description       = "allow nodeports"
   security_group_id = aws_security_group.devour_k8s.id
   cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 32258
+  from_port         = 30000
   ip_protocol       = "tcp"
-  to_port           = 32258
+  to_port           = 32767
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_kubectl" {
@@ -210,7 +210,7 @@ resource "aws_iam_instance_profile" "ec2_k8s_node_profile" {
 resource "aws_instance" "k8s_control_plane_nodes" {
   count                  = 1
   ami                    = "ami-03f8acd418785369b" # "ami-0b6d6dacf350ebc82"
-  instance_type          = "t2.medium"
+  instance_type          = "t2.small"
   key_name               = "shumin-test"
   iam_instance_profile   = aws_iam_instance_profile.ec2_k8s_node_profile.name
   subnet_id              = aws_subnet.public_subnet_a.id
@@ -228,9 +228,9 @@ resource "aws_instance" "k8s_control_plane_nodes" {
 
 # AWS Instances for Kubernetes Worker Nodes
 resource "aws_instance" "k8s_worker_nodes" {
-  count                  = 3
+  count                  = 2
   ami                    = "ami-03f8acd418785369b"
-  instance_type          = "t2.medium"
+  instance_type          = "t2.large"
   key_name               = "shumin-test"
   iam_instance_profile   = aws_iam_instance_profile.ec2_k8s_node_profile.name
   subnet_id              = aws_subnet.public_subnet_a.id
@@ -308,6 +308,18 @@ resource "null_resource" "init_nodes" {
 # output "rendered_init_script" {
 #   value = local.init_script
 # }
+
+output "vpc_id" {
+  value = aws_vpc.devour_k8s.id
+}
+
+output "subnet_id" {
+  value = aws_subnet.public_subnet_a.id
+}
+
+output "security_group_id" {
+  value = aws_security_group.devour_k8s.id
+}
 
 output "cp_private_ips" {
   value = aws_instance.k8s_control_plane_nodes[*].private_ip
