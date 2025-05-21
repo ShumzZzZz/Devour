@@ -210,7 +210,7 @@ resource "aws_iam_instance_profile" "ec2_k8s_node_profile" {
 resource "aws_instance" "k8s_control_plane_nodes" {
   count                  = 1
   ami                    = "ami-03f8acd418785369b" # "ami-0b6d6dacf350ebc82"
-  instance_type          = "t2.small"
+  instance_type          = "t2.medium"
   key_name               = "shumin-test"
   iam_instance_profile   = aws_iam_instance_profile.ec2_k8s_node_profile.name
   subnet_id              = aws_subnet.public_subnet_a.id
